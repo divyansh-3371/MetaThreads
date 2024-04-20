@@ -1,0 +1,86 @@
+<div class="cart">
+    <h2>Shopping Cart</h2>
+    <ul id="cart-items">
+        <!-- Cart items will be populated here -->
+    </ul>
+    <div class="cart-summary">
+        <span>Total:</span>
+        <span id="cart-total">$0.00</span>
+    </div>
+    <button id="checkout-btn">Checkout</button>
+</div>
+
+<script>
+// Sample data
+const cartItems = [
+    { id: 1, title: 'Product 1', price: 10.00, quantity: 2 },
+    { id: 2, title: 'Product 2', price: 20.00, quantity: 1 },
+];
+
+// Populate cart items
+const cartItemsList = document.getElementById('cart-items');
+cartItems.forEach(item => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+        <span>${item.title} (${item.price} x ${item.quantity})</span>
+        <button class="remove-btn">Remove</button>
+    `;
+    cartItemsList.appendChild(li);
+});
+
+// Calculate total
+const cartTotal = document.getElementById('cart-total');
+let total = 0;
+cartItems.forEach(item => {
+    total += item.price * item.quantity;
+});
+cartTotal.textContent = `$${total.toFixed(2)}`;
+
+// Remove item from cart
+const removeBtns = document.getElementsByClassName('remove-btn');
+for (let i = 0; i < removeBtns.length; i++) {
+    removeBtns[i].addEventListener('click', () => {
+        // Remove item from cart data
+        cartItems.splice(i, 1);
+
+        // Update cart display
+        const li = removeBtns[i].closest('li');
+        li.remove();
+
+        // Recalculate total
+        let total = 0;
+        cartItems.forEach(item => {
+            total += item.price * item.quantity;
+        });
+        cartTotal.textContent = `$${total.toFixed(2)}`;
+    });
+}
+
+// Proceed to checkout
+document.getElementById('checkout-btn').addEventListener('click', () => {
+    // Implement checkout logic here
+});
+</script>
+
+<style>
+.cart {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.cart-summary {
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+.remove-btn {
+    margin-left: 1rem;
+    background-color: #f00;
+    color: #fff;
+    border: none;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.2rem;
+    cursor: pointer;
+}
+</style>
